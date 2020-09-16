@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.framework.common.dao.auto.mapper.TableUpdateLogMapper">
+    <!-- 字段列表 -->
+    <sql id="table_update_log_col">
+        id, table_name, table_name_desc, update_table_id, valid, create_user, create_time, modify_user, modify_time, memo 
+    </sql>
+
+    <!-- 分页查询前缀 -->
+    <sql id="pagePrefix">
+        select * from (
+    </sql>
+
+    <!-- 分页查询后缀 -->
+    <sql id="pageSuffix">
+        ) vv
+        <if test="startRow != null and pageSize != null">
+            limit ${startRow}, ${pageSize}
+        </if>
+    </sql>
+
+
+    <!-- 新增表记录修改日志 -->
+    <insert id="insertTableUpdateLog" parameterType="cn.framework.common.dao.auto.entity.TableUpdateLogEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into table_update_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="table_name != null">
+                table_name,
+            </if>
+            <if test="table_name_desc != null">
+                table_name_desc,
+            </if>
+            <if test="update_table_id != null">
+                update_table_id,
+            </if>
+            <if test="valid != null">
+                valid,
+            </if>
+            <if test="create_user != null">
+                create_user,
+            </if>
+            <if test="create_time != null">
+                create_time,
+            </if>
+            <if test="modify_user != null">
+                modify_user,
+            </if>
+            <if test="modify_time != null">
+                modify_time,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="table_name != null">
+                #{table_name},
+            </if>
+            <if test="table_name_desc != null">
+                #{table_name_desc},
+            </if>
+            <if test="update_table_id != null">
+                #{update_table_id},
+            </if>
+            <if test="valid != null">
+                #{valid},
+            </if>
+            <if test="create_user != null">
+                #{create_user},
+            </if>
+            <if test="create_time != null">
+                #{create_time},
+            </if>
+            <if test="modify_user != null">
+                #{modify_user},
+            </if>
+            <if test="modify_time != null">
+                #{modify_time},
+            </if>
+            <if test="memo != null">
+                #{memo},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 删除表记录修改日志 -->
+    <delete id="deleteTableUpdateLog" parameterType="integer">
+        delete from table_update_log where id = #{id}
+    </delete>
+
+    <!-- 更新表记录修改日志 -->
+    <update id="updateTableUpdateLog" parameterType="cn.framework.common.dao.auto.entity.TableUpdateLogEntity">
+        update table_update_log
+        <set>
+
+            <if test="table_name != null and table_name != ''">table_name = #{table_name},</if><!-- 修改表名 -->
+            <if test="table_name_desc != null and table_name_desc != ''">table_name_desc = #{table_name_desc},
+            </if><!-- 表名中文描述 -->
+            <if test="update_table_id != null and update_table_id != ''">update_table_id = #{update_table_id},
+            </if><!-- 修改表的主键  外键，对应修改表的主键 -->
+            <if test="valid != null and valid != ''">valid = #{valid},</if><!-- 是否有效 -->
+
+
+            <if test="modify_user != null and modify_user != ''">modify_user = #{modify_user},</if><!-- 修改人 -->
+
+            <if test="memo != null and memo != ''">memo = #{memo},</if><!-- 备注 -->
+            modify_time = sysdate() <!-- 修改时间 -->
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 根据id查询表记录修改日志 -->
+    <select id="selectTableUpdateLogById" parameterType="integer"
+            resultType="cn.framework.common.dao.auto.entity.TableUpdateLogEntity">
+        select
+        <include refid="table_update_log_col"/>
+        from table_update_log where id = #{id}
+    </select>
+
+    <!-- 根据条件查询表记录修改日志列表 -->
+    <select id="getTableUpdateLogs" parameterType="cn.framework.common.dao.auto.entity.TableUpdateLogEntity"
+            resultType="cn.framework.common.dao.auto.entity.TableUpdateLogEntity">
+        <include refid="pagePrefix"/>
+        select
+        <include refid="table_update_log_col"/>
+        from table_update_log
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if><!-- ID -->
+            <if test="table_name != null and table_name != ''">and table_name = #{table_name}</if><!-- 修改表名 -->
+            <if test="table_name_desc != null and table_name_desc != ''">and table_name_desc = #{table_name_desc}
+            </if><!-- 表名中文描述 -->
+            <if test="update_table_id != null and update_table_id != ''">and update_table_id = #{update_table_id}
+            </if><!-- 修改表的主键  外键，对应修改表的主键 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}
+            </if><!-- 创建人 外键 对应sys_user表主键 -->
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+        </where>
+        <include refid="pageSuffix"/>
+    </select>
+
+    <!-- 根据条件查询表记录修改日志数量 -->
+    <select id="getTableUpdateLogsCount" parameterType="cn.framework.common.dao.auto.entity.TableUpdateLogEntity"
+            resultType="Integer">
+        select count(1) from table_update_log
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if><!-- ID -->
+            <if test="table_name != null and table_name != ''">and table_name = #{table_name}</if><!-- 修改表名 -->
+            <if test="table_name_desc != null and table_name_desc != ''">and table_name_desc = #{table_name_desc}
+            </if><!-- 表名中文描述 -->
+            <if test="update_table_id != null and update_table_id != ''">and update_table_id = #{update_table_id}
+            </if><!-- 修改表的主键  外键，对应修改表的主键 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}
+            </if><!-- 创建人 外键 对应sys_user表主键 -->
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+        </where>
+    </select>
+</mapper>

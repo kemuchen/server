@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.framework.common.dao.auto.mapper.SysDynamicDictConfigMapper">
+    <!-- 字段列表 -->
+    <sql id="sys_dynamic_dict_config_col">
+        id, configid, multsql, params, valid, description, create_user, create_time, modify_user, modify_time, memo 
+    </sql>
+
+    <!-- 分页查询前缀 -->
+    <sql id="pagePrefix">
+        select * from (
+    </sql>
+
+    <!-- 分页查询后缀 -->
+    <sql id="pageSuffix">
+        ) vv
+        <if test="startRow != null and pageSize != null">
+            limit ${startRow}, ${pageSize}
+        </if>
+    </sql>
+
+
+    <!-- 新增动态字典配置表 -->
+    <insert id="insertSysDynamicDictConfig"
+            parameterType="cn.framework.common.dao.auto.entity.SysDynamicDictConfigEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into sys_dynamic_dict_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="configid != null">
+                configid,
+            </if>
+            <if test="multsql != null">
+                multsql,
+            </if>
+            <if test="params != null">
+                params,
+            </if>
+            <if test="valid != null">
+                valid,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="create_user != null">
+                create_user,
+            </if>
+            <if test="create_time != null">
+                create_time,
+            </if>
+            <if test="modify_user != null">
+                modify_user,
+            </if>
+            <if test="modify_time != null">
+                modify_time,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="configid != null">
+                #{configid},
+            </if>
+            <if test="multsql != null">
+                #{multsql},
+            </if>
+            <if test="params != null">
+                #{params},
+            </if>
+            <if test="valid != null">
+                #{valid},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="create_user != null">
+                #{create_user},
+            </if>
+            <if test="create_time != null">
+                #{create_time},
+            </if>
+            <if test="modify_user != null">
+                #{modify_user},
+            </if>
+            <if test="modify_time != null">
+                #{modify_time},
+            </if>
+            <if test="memo != null">
+                #{memo},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 删除动态字典配置表 -->
+    <delete id="deleteSysDynamicDictConfig" parameterType="integer">
+        delete from sys_dynamic_dict_config where id = #{id}
+    </delete>
+
+    <!-- 更新动态字典配置表 -->
+    <update id="updateSysDynamicDictConfig"
+            parameterType="cn.framework.common.dao.auto.entity.SysDynamicDictConfigEntity">
+        update sys_dynamic_dict_config
+        <set>
+
+            <if test="configid != null and configid != ''">configid = #{configid},</if><!-- 配置id -->
+            <if test="multsql != null and multsql != ''">multsql = #{multsql},</if><!-- 多记录查询语句 -->
+            <if test="params != null and params != ''">params = #{params},</if><!-- 查询条件参数 -->
+            <if test="valid != null and valid != ''">valid = #{valid},</if><!-- 有效标志 -->
+            <if test="description != null and description != ''">description = #{description},</if><!-- 动态字典描述 -->
+
+
+            <if test="modify_user != null and modify_user != ''">modify_user = #{modify_user},</if><!-- 修改人 -->
+
+            <if test="memo != null and memo != ''">memo = #{memo},</if><!-- 备注 -->
+            modify_time = sysdate() <!-- 修改时间 -->
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 根据id查询动态字典配置表 -->
+    <select id="selectSysDynamicDictConfigById" parameterType="integer"
+            resultType="cn.framework.common.dao.auto.entity.SysDynamicDictConfigEntity">
+        select
+        <include refid="sys_dynamic_dict_config_col"/>
+        from sys_dynamic_dict_config where id = #{id}
+    </select>
+
+    <!-- 根据条件查询动态字典配置表列表 -->
+    <select id="getSysDynamicDictConfigs"
+            parameterType="cn.framework.common.dao.auto.entity.SysDynamicDictConfigEntity"
+            resultType="cn.framework.common.dao.auto.entity.SysDynamicDictConfigEntity">
+        <include refid="pagePrefix"/>
+        select
+        <include refid="sys_dynamic_dict_config_col"/>
+        from sys_dynamic_dict_config
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="configid != null and configid != ''">and configid = #{configid}</if><!-- 配置id -->
+            <if test="multsql != null and multsql != ''">and multsql = #{multsql}</if><!-- 多记录查询语句 -->
+            <if test="params != null and params != ''">and params = #{params}</if><!-- 查询条件参数 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 有效标志 -->
+            <if test="description != null and description != ''">and description = #{description}</if><!-- 动态字典描述 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+        </where>
+        <include refid="pageSuffix"/>
+    </select>
+
+    <!-- 根据条件查询动态字典配置表数量 -->
+    <select id="getSysDynamicDictConfigsCount"
+            parameterType="cn.framework.common.dao.auto.entity.SysDynamicDictConfigEntity" resultType="Integer">
+        select count(1) from sys_dynamic_dict_config
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="configid != null and configid != ''">and configid = #{configid}</if><!-- 配置id -->
+            <if test="multsql != null and multsql != ''">and multsql = #{multsql}</if><!-- 多记录查询语句 -->
+            <if test="params != null and params != ''">and params = #{params}</if><!-- 查询条件参数 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 有效标志 -->
+            <if test="description != null and description != ''">and description = #{description}</if><!-- 动态字典描述 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+        </where>
+    </select>
+</mapper>

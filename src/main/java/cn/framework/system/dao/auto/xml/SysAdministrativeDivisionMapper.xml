@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.framework.system.dao.auto.mapper.SysAdministrativeDivisionMapper">
+    <!-- 字段列表 -->
+    <sql id="sys_administrative_division_col">
+        create_time, create_user, division_name, division_no, full_name, id, latitude, longtitude, memo, modify_time, modify_user, parent_division_id, valid 
+    </sql>
+
+    <!-- 分页查询前缀 -->
+    <sql id="pagePrefix">
+        select * from (
+    </sql>
+
+    <!-- 分页查询后缀 -->
+    <sql id="pageSuffix">
+        ) vv
+        <if test="startRow != null and pageSize != null">
+            limit ${startRow}, ${pageSize}
+        </if>
+    </sql>
+
+
+    <!-- 新增行政区划信息表 -->
+    <insert id="insertSysAdministrativeDivision"
+            parameterType="cn.framework.system.dao.auto.entity.SysAdministrativeDivisionEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into sys_administrative_division
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="create_time != null">
+                create_time,
+            </if>
+            <if test="create_user != null">
+                create_user,
+            </if>
+            <if test="division_name != null">
+                division_name,
+            </if>
+            <if test="division_no != null">
+                division_no,
+            </if>
+            <if test="full_name != null">
+                full_name,
+            </if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="latitude != null">
+                latitude,
+            </if>
+            <if test="longtitude != null">
+                longtitude,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="modify_time != null">
+                modify_time,
+            </if>
+            <if test="modify_user != null">
+                modify_user,
+            </if>
+            <if test="parent_division_id != null">
+                parent_division_id,
+            </if>
+            <if test="valid != null">
+                valid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="create_time != null">
+                #{create_time},
+            </if>
+            <if test="create_user != null">
+                #{create_user},
+            </if>
+            <if test="division_name != null">
+                #{division_name},
+            </if>
+            <if test="division_no != null">
+                #{division_no},
+            </if>
+            <if test="full_name != null">
+                #{full_name},
+            </if>
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="latitude != null">
+                #{latitude},
+            </if>
+            <if test="longtitude != null">
+                #{longtitude},
+            </if>
+            <if test="memo != null">
+                #{memo},
+            </if>
+            <if test="modify_time != null">
+                #{modify_time},
+            </if>
+            <if test="modify_user != null">
+                #{modify_user},
+            </if>
+            <if test="parent_division_id != null">
+                #{parent_division_id},
+            </if>
+            <if test="valid != null">
+                #{valid},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 删除行政区划信息表 -->
+    <delete id="deleteSysAdministrativeDivision" parameterType="integer">
+        delete from sys_administrative_division where id = #{id}
+    </delete>
+
+    <!-- 更新行政区划信息表 -->
+    <update id="updateSysAdministrativeDivision"
+            parameterType="cn.framework.system.dao.auto.entity.SysAdministrativeDivisionEntity">
+        update sys_administrative_division
+        <set>
+
+
+            <if test="division_name != null and division_name != ''">division_name = #{division_name},
+            </if><!-- 行政区划名称 -->
+            <if test="division_no != null and division_no != ''">division_no = #{division_no},</if><!-- 行政区划号码 -->
+            <if test="full_name != null and full_name != ''">full_name = #{full_name},</if><!-- 全称 -->
+
+            <if test="latitude != null and latitude != ''">latitude = #{latitude},</if><!-- 精度 -->
+            <if test="longtitude != null and longtitude != ''">longtitude = #{longtitude},</if><!-- 纬度 -->
+            <if test="memo != null and memo != ''">memo = #{memo},</if><!-- 备注 -->
+
+            <if test="modify_user != null and modify_user != ''">modify_user = #{modify_user},</if><!-- 修改人 -->
+            <if test="parent_division_id != null and parent_division_id != ''">parent_division_id =
+                #{parent_division_id},
+            </if><!-- 父行政区划id -->
+            <if test="valid != null and valid != ''">valid = #{valid},</if><!-- 是否有效 -->
+            modify_time = sysdate() <!-- 修改时间 -->
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 根据id查询行政区划信息表 -->
+    <select id="selectSysAdministrativeDivisionById" parameterType="integer"
+            resultType="cn.framework.system.dao.auto.entity.SysAdministrativeDivisionEntity">
+        select
+        <include refid="sys_administrative_division_col"/>
+        from sys_administrative_division where id = #{id}
+    </select>
+
+    <!-- 根据条件查询行政区划信息表列表 -->
+    <select id="getSysAdministrativeDivisions"
+            parameterType="cn.framework.system.dao.auto.entity.SysAdministrativeDivisionEntity"
+            resultType="cn.framework.system.dao.auto.entity.SysAdministrativeDivisionEntity">
+        <include refid="pagePrefix"/>
+        select
+        <include refid="sys_administrative_division_col"/>
+        from sys_administrative_division
+        <where>
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="division_name != null and division_name != ''">and division_name = #{division_name}
+            </if><!-- 行政区划名称 -->
+            <if test="division_no != null and division_no != ''">and division_no = #{division_no}</if><!-- 行政区划号码 -->
+            <if test="full_name != null and full_name != ''">and full_name = #{full_name}</if><!-- 全称 -->
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="latitude != null and latitude != ''">and latitude = #{latitude}</if><!-- 精度 -->
+            <if test="longtitude != null and longtitude != ''">and longtitude = #{longtitude}</if><!-- 纬度 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="parent_division_id != null and parent_division_id != ''">and parent_division_id =
+                #{parent_division_id}
+            </if><!-- 父行政区划id -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+        </where>
+        <include refid="pageSuffix"/>
+    </select>
+
+    <!-- 根据条件查询行政区划信息表数量 -->
+    <select id="getSysAdministrativeDivisionsCount"
+            parameterType="cn.framework.system.dao.auto.entity.SysAdministrativeDivisionEntity"
+            resultType="Integer">
+        select count(1) from sys_administrative_division
+        <where>
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="division_name != null and division_name != ''">and division_name = #{division_name}
+            </if><!-- 行政区划名称 -->
+            <if test="division_no != null and division_no != ''">and division_no = #{division_no}</if><!-- 行政区划号码 -->
+            <if test="full_name != null and full_name != ''">and full_name = #{full_name}</if><!-- 全称 -->
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="latitude != null and latitude != ''">and latitude = #{latitude}</if><!-- 精度 -->
+            <if test="longtitude != null and longtitude != ''">and longtitude = #{longtitude}</if><!-- 纬度 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="parent_division_id != null and parent_division_id != ''">and parent_division_id =
+                #{parent_division_id}
+            </if><!-- 父行政区划id -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+        </where>
+    </select>
+</mapper>

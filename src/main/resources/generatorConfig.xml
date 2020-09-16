@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- 引入SpringBoot配置文件 -->
+    <properties resource="application.properties"/>
+
+    <context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
+
+        <!-- 生成的 Java 文件的编码 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!-- 格式化 Java 代码 -->
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <!-- 格式化 XML 代码 -->
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+
+        <commentGenerator type="tools.MyCommentGenerator">
+            <!--            <property name="suppressDate" value="true" />-->
+            <!--            <property name="suppressAllComments" value="true" />-->
+        </commentGenerator>
+
+        <!-- 配置数据库连接 -->
+        <jdbcConnection driverClass="${spring.datasource.driverClassName}"
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
+        </jdbcConnection>
+
+        <!-- 生成实体的位置 -->
+        <javaModelGenerator targetPackage="tools.generator.entity" targetProject="src/main/java"/>
+
+        <!-- 生成 Mapper XML 的位置 -->
+        <sqlMapGenerator targetPackage="tools.generator.mapper" targetProject="src/main/java"/>
+
+        <!-- 生成 Mapper 接口的位置 -->
+        <javaClientGenerator targetPackage="tools.generator.mapper" targetProject="src/main/java" type="XMLMAPPER">
+        </javaClientGenerator>
+
+        <!-- 设置数据库的表名和实体类名 -->
+        <table tableName="sys_right" domainObjectName="SysMenu"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <!--mysql 配置-->
+            <!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+            <!--oracle 配置-->
+            <!--<generatedKey column="id" sqlStatement="select SEQ_{1}.nextval from dual" identity="false" type="pre"/>-->
+        </table>
+    </context>
+</generatorConfiguration>

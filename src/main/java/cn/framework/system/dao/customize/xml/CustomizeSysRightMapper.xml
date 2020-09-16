@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.framework.system.dao.customize.mapper.CustomizeSysRightMapper">
+    <!-- 根据userId查询用户具有的菜单权限 -->
+    <select id="getRightsByUserId" parameterType="map"
+            resultType="cn.framework.system.dao.auto.entity.SysRightEntity">
+        select distinct rightid id, sub_sys_type, right_url, right_name, sort_no, right_type, parent_id
+        from v_user_right
+        <where>
+            userid = #{user_id}
+            <if test="parent_id != null">and parent_id = #{parent_id}</if>
+            <if test="right_type != null">and right_type = #{right_type}</if>
+            order by sort_no asc
+        </where>
+    </select>
+</mapper>

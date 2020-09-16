@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.framework.system.dao.customize.mapper.CustomizeSysUserMapper">
+    <!-- 根据userId查询用户具有的菜单权限 -->
+    <select id="getUsersWithRole" resultType="map">
+        SELECT
+        u.id,u.username,u.loginid,u.user_type,u.email,u.phone,u.`status`,u.login_fail_count,u.last_login_time,u.valid,u.create_time,
+        u.create_user,u.modify_user,u.modify_time,u.memo,d.role_ids,d.role_names,d.role_descs,u1.username
+        create_username,u1.loginid create_loginid
+        FROM (
+        SELECT GROUP_CONCAT( b.id ) role_ids, GROUP_CONCAT( c.`name` ) role_names, GROUP_CONCAT( c.description )
+        role_descs, a.id
+        FROM sys_user a
+        LEFT JOIN sys_user2role b ON a.id = b.userid and b.valid='1'
+        LEFT JOIN sys_role c ON b.roleid = c.id and c.valid='1'
+        WHERE a.hotel_group_id=#{hotel_group_id} and a.hotel_id=#{hotel_id} and a.valid='1'
+        <if test="username != null and username != ''">and a.username = #{username}</if>
+        <if test="loginid != null and loginid != ''">and a.loginid = #{loginid}</if>
+        <if test="phone != null and phone != ''">and a.phone = #{phone}</if>
+        GROUP BY a.id
+        ) d
+        JOIN sys_user u ON u.id = d.id
+        LEFT JOIN sys_user u1 ON u.create_user = u1.id
+    </select>
+</mapper>

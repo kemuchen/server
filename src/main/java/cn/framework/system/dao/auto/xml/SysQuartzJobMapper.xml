@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.framework.system.dao.auto.mapper.SysQuartzJobMapper">
+    <!-- 字段列表 -->
+    <sql id="sys_quartz_job_col">
+        id, job_group, job_type, task, schedule, description, params, start_time, valid, create_user, create_time, modify_user, modify_time, memo 
+    </sql>
+
+    <!-- 分页查询前缀 -->
+    <sql id="pagePrefix">
+        select * from (
+    </sql>
+
+    <!-- 分页查询后缀 -->
+    <sql id="pageSuffix">
+        ) vv
+        <if test="startRow != null and pageSize != null">
+            limit ${startRow}, ${pageSize}
+        </if>
+    </sql>
+
+
+    <!-- 新增酒店定时器定时器配置 -->
+    <insert id="insertSysQuartzJob" parameterType="cn.framework.system.dao.auto.entity.SysQuartzJobEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into sys_quartz_job
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="job_group != null">
+                job_group,
+            </if>
+            <if test="job_type != null">
+                job_type,
+            </if>
+            <if test="task != null">
+                task,
+            </if>
+            <if test="schedule != null">
+                schedule,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="params != null">
+                params,
+            </if>
+            <if test="start_time != null">
+                start_time,
+            </if>
+            <if test="valid != null">
+                valid,
+            </if>
+            <if test="create_user != null">
+                create_user,
+            </if>
+            <if test="create_time != null">
+                create_time,
+            </if>
+            <if test="modify_user != null">
+                modify_user,
+            </if>
+            <if test="modify_time != null">
+                modify_time,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="job_group != null">
+                #{job_group},
+            </if>
+            <if test="job_type != null">
+                #{job_type},
+            </if>
+            <if test="task != null">
+                #{task},
+            </if>
+            <if test="schedule != null">
+                #{schedule},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="params != null">
+                #{params},
+            </if>
+            <if test="start_time != null">
+                #{start_time},
+            </if>
+            <if test="valid != null">
+                #{valid},
+            </if>
+            <if test="create_user != null">
+                #{create_user},
+            </if>
+            <if test="create_time != null">
+                #{create_time},
+            </if>
+            <if test="modify_user != null">
+                #{modify_user},
+            </if>
+            <if test="modify_time != null">
+                #{modify_time},
+            </if>
+            <if test="memo != null">
+                #{memo},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 删除酒店定时器定时器配置 -->
+    <delete id="deleteSysQuartzJob" parameterType="integer">
+        delete from sys_quartz_job where id = #{id}
+    </delete>
+
+    <!-- 更新酒店定时器定时器配置 -->
+    <update id="updateSysQuartzJob" parameterType="cn.framework.system.dao.auto.entity.SysQuartzJobEntity">
+        update sys_quartz_job
+        <set>
+
+            <if test="job_group != null and job_group != ''">job_group = #{job_group},</if><!-- 任务组 -->
+            <if test="job_type != null and job_type != ''">job_type = #{job_type},</if><!-- 任务类型 -->
+            <if test="task != null and task != ''">task = #{task},</if><!-- 执行任务 -->
+            <if test="schedule != null and schedule != ''">schedule = #{schedule},</if><!-- 执行计划 -->
+            <if test="description != null and description != ''">description = #{description},</if><!-- 描述 -->
+            <if test="params != null and params != ''">params = #{params},</if><!-- 参数 -->
+            <if test="start_time != null">start_time = #{start_time},</if><!--  -->
+            <if test="valid != null and valid != ''">valid = #{valid},</if><!-- 是否有效 -->
+
+
+            <if test="modify_user != null and modify_user != ''">modify_user = #{modify_user},</if><!-- 修改人 -->
+
+            <if test="memo != null and memo != ''">memo = #{memo},</if><!-- 备注 -->
+            modify_time = sysdate() <!-- 修改时间 -->
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 根据id查询酒店定时器定时器配置 -->
+    <select id="selectSysQuartzJobById" parameterType="integer"
+            resultType="cn.framework.system.dao.auto.entity.SysQuartzJobEntity">
+        select
+        <include refid="sys_quartz_job_col"/>
+        from sys_quartz_job where id = #{id}
+    </select>
+
+    <!-- 根据条件查询酒店定时器定时器配置列表 -->
+    <select id="getSysQuartzJobs" parameterType="cn.framework.system.dao.auto.entity.SysQuartzJobEntity"
+            resultType="cn.framework.system.dao.auto.entity.SysQuartzJobEntity">
+        <include refid="pagePrefix"/>
+        select
+        <include refid="sys_quartz_job_col"/>
+        from sys_quartz_job
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="job_group != null and job_group != ''">and job_group = #{job_group}</if><!-- 任务组 -->
+            <if test="job_type != null and job_type != ''">and job_type = #{job_type}</if><!-- 任务类型 -->
+            <if test="task != null and task != ''">and task = #{task}</if><!-- 执行任务 -->
+            <if test="schedule != null and schedule != ''">and schedule = #{schedule}</if><!-- 执行计划 -->
+            <if test="description != null and description != ''">and description = #{description}</if><!-- 描述 -->
+            <if test="params != null and params != ''">and params = #{params}</if><!-- 参数 -->
+            <if test="start_time_sta != null">and start_time <![CDATA[>=]]> #{start_time_sta}</if><!--  -->
+            <if test="start_time_end != null">and start_time <![CDATA[<=]]> #{start_time_end}</if><!--  -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+        </where>
+        <include refid="pageSuffix"/>
+    </select>
+
+    <!-- 根据条件查询酒店定时器定时器配置数量 -->
+    <select id="getSysQuartzJobsCount" parameterType="cn.framework.system.dao.auto.entity.SysQuartzJobEntity"
+            resultType="Integer">
+        select count(1) from sys_quartz_job
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="job_group != null and job_group != ''">and job_group = #{job_group}</if><!-- 任务组 -->
+            <if test="job_type != null and job_type != ''">and job_type = #{job_type}</if><!-- 任务类型 -->
+            <if test="task != null and task != ''">and task = #{task}</if><!-- 执行任务 -->
+            <if test="schedule != null and schedule != ''">and schedule = #{schedule}</if><!-- 执行计划 -->
+            <if test="description != null and description != ''">and description = #{description}</if><!-- 描述 -->
+            <if test="params != null and params != ''">and params = #{params}</if><!-- 参数 -->
+            <if test="start_time_sta != null">and start_time <![CDATA[>=]]> #{start_time_sta}</if><!--  -->
+            <if test="start_time_end != null">and start_time <![CDATA[<=]]> #{start_time_end}</if><!--  -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+        </where>
+    </select>
+</mapper>

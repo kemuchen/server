@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.framework.system.dao.auto.mapper.SysMessageMapper">
+    <!-- 字段列表 -->
+    <sql id="sys_message_col">
+        id, message_type, title, content, is_send, send_time, receive_man, is_read, read_time, valid, create_user, create_time, modify_user, modify_time, memo 
+    </sql>
+
+    <!-- 分页查询前缀 -->
+    <sql id="pagePrefix">
+        select * from (
+    </sql>
+
+    <!-- 分页查询后缀 -->
+    <sql id="pageSuffix">
+        ) vv
+        <if test="startRow != null and pageSize != null">
+            limit ${startRow}, ${pageSize}
+        </if>
+    </sql>
+
+
+    <!-- 新增系统消息表 -->
+    <insert id="insertSysMessage" parameterType="cn.framework.system.dao.auto.entity.SysMessageEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into sys_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="message_type != null">
+                message_type,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="is_send != null">
+                is_send,
+            </if>
+            <if test="send_time != null">
+                send_time,
+            </if>
+            <if test="receive_man != null">
+                receive_man,
+            </if>
+            <if test="is_read != null">
+                is_read,
+            </if>
+            <if test="read_time != null">
+                read_time,
+            </if>
+            <if test="valid != null">
+                valid,
+            </if>
+            <if test="create_user != null">
+                create_user,
+            </if>
+            <if test="create_time != null">
+                create_time,
+            </if>
+            <if test="modify_user != null">
+                modify_user,
+            </if>
+            <if test="modify_time != null">
+                modify_time,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="message_type != null">
+                #{message_type},
+            </if>
+            <if test="title != null">
+                #{title},
+            </if>
+            <if test="content != null">
+                #{content},
+            </if>
+            <if test="is_send != null">
+                #{is_send},
+            </if>
+            <if test="send_time != null">
+                #{send_time},
+            </if>
+            <if test="receive_man != null">
+                #{receive_man},
+            </if>
+            <if test="is_read != null">
+                #{is_read},
+            </if>
+            <if test="read_time != null">
+                #{read_time},
+            </if>
+            <if test="valid != null">
+                #{valid},
+            </if>
+            <if test="create_user != null">
+                #{create_user},
+            </if>
+            <if test="create_time != null">
+                #{create_time},
+            </if>
+            <if test="modify_user != null">
+                #{modify_user},
+            </if>
+            <if test="modify_time != null">
+                #{modify_time},
+            </if>
+            <if test="memo != null">
+                #{memo},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 删除系统消息表 -->
+    <delete id="deleteSysMessage" parameterType="integer">
+        delete from sys_message where id = #{id}
+    </delete>
+
+    <!-- 更新系统消息表 -->
+    <update id="updateSysMessage" parameterType="cn.framework.system.dao.auto.entity.SysMessageEntity">
+        update sys_message
+        <set>
+
+            <if test="message_type != null and message_type != ''">message_type = #{message_type},
+            </if><!-- 消息类别 sys_dict -->
+            <if test="title != null and title != ''">title = #{title},</if><!-- 消息标题 -->
+            <if test="content != null and content != ''">content = #{content},</if><!-- 消息内容 -->
+            <if test="is_send != null and is_send != ''">is_send = #{is_send},</if><!-- 是否发送 -->
+            <if test="send_time != null">send_time = #{send_time},</if><!-- 消息发送时间 -->
+            <if test="receive_man != null and receive_man != ''">receive_man = #{receive_man},
+            </if><!-- 消息接收人 外键，对应sys_user表主键 -->
+            <if test="is_read != null and is_read != ''">is_read = #{is_read},</if><!-- 是否阅读 1-是，0-否 -->
+            <if test="read_time != null">read_time = #{read_time},</if><!-- 阅读时间 -->
+            <if test="valid != null and valid != ''">valid = #{valid},</if><!-- 是否有效 1-是，0-否 -->
+
+
+            <if test="modify_user != null and modify_user != ''">modify_user = #{modify_user},</if><!-- 修改人 -->
+
+            <if test="memo != null and memo != ''">memo = #{memo},</if><!-- 备注 -->
+            modify_time = sysdate() <!-- 修改时间 -->
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 根据id查询系统消息表 -->
+    <select id="selectSysMessageById" parameterType="integer"
+            resultType="cn.framework.system.dao.auto.entity.SysMessageEntity">
+        select
+        <include refid="sys_message_col"/>
+        from sys_message where id = #{id}
+    </select>
+
+    <!-- 根据条件查询系统消息表列表 -->
+    <select id="getSysMessages" parameterType="cn.framework.system.dao.auto.entity.SysMessageEntity"
+            resultType="cn.framework.system.dao.auto.entity.SysMessageEntity">
+        <include refid="pagePrefix"/>
+        select
+        <include refid="sys_message_col"/>
+        from sys_message
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if><!-- ID -->
+            <if test="message_type != null and message_type != ''">and message_type = #{message_type}
+            </if><!-- 消息类别 sys_dict -->
+            <if test="title != null and title != ''">and title = #{title}</if><!-- 消息标题 -->
+            <if test="content != null and content != ''">and content = #{content}</if><!-- 消息内容 -->
+            <if test="is_send != null and is_send != ''">and is_send = #{is_send}</if><!-- 是否发送 -->
+            <if test="send_time_sta != null">and send_time <![CDATA[>=]]> #{send_time_sta}</if><!-- 消息发送时间 -->
+            <if test="send_time_end != null">and send_time <![CDATA[<=]]> #{send_time_end}</if><!-- 消息发送时间 -->
+            <if test="receive_man != null and receive_man != ''">and receive_man = #{receive_man}
+            </if><!-- 消息接收人 外键，对应sys_user表主键 -->
+            <if test="is_read != null and is_read != ''">and is_read = #{is_read}</if><!-- 是否阅读 1-是，0-否 -->
+            <if test="read_time_sta != null">and read_time <![CDATA[>=]]> #{read_time_sta}</if><!-- 阅读时间 -->
+            <if test="read_time_end != null">and read_time <![CDATA[<=]]> #{read_time_end}</if><!-- 阅读时间 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 1-是，0-否 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}
+            </if><!-- 创建人 外键 对应sys_user表主键 -->
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+        </where>
+        <include refid="pageSuffix"/>
+    </select>
+
+    <!-- 根据条件查询系统消息表数量 -->
+    <select id="getSysMessagesCount" parameterType="cn.framework.system.dao.auto.entity.SysMessageEntity"
+            resultType="Integer">
+        select count(1) from sys_message
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if><!-- ID -->
+            <if test="message_type != null and message_type != ''">and message_type = #{message_type}
+            </if><!-- 消息类别 sys_dict -->
+            <if test="title != null and title != ''">and title = #{title}</if><!-- 消息标题 -->
+            <if test="content != null and content != ''">and content = #{content}</if><!-- 消息内容 -->
+            <if test="is_send != null and is_send != ''">and is_send = #{is_send}</if><!-- 是否发送 -->
+            <if test="send_time_sta != null">and send_time <![CDATA[>=]]> #{send_time_sta}</if><!-- 消息发送时间 -->
+            <if test="send_time_end != null">and send_time <![CDATA[<=]]> #{send_time_end}</if><!-- 消息发送时间 -->
+            <if test="receive_man != null and receive_man != ''">and receive_man = #{receive_man}
+            </if><!-- 消息接收人 外键，对应sys_user表主键 -->
+            <if test="is_read != null and is_read != ''">and is_read = #{is_read}</if><!-- 是否阅读 1-是，0-否 -->
+            <if test="read_time_sta != null">and read_time <![CDATA[>=]]> #{read_time_sta}</if><!-- 阅读时间 -->
+            <if test="read_time_end != null">and read_time <![CDATA[<=]]> #{read_time_end}</if><!-- 阅读时间 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 1-是，0-否 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}
+            </if><!-- 创建人 外键 对应sys_user表主键 -->
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+        </where>
+    </select>
+</mapper>

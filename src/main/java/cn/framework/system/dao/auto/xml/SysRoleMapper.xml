@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.framework.system.dao.auto.mapper.SysRoleMapper">
+    <!-- 字段列表 -->
+    <sql id="sys_role_col">
+        create_time, create_user, description, id, memo, modify_time, modify_user, name, valid 
+    </sql>
+
+    <!-- 分页查询前缀 -->
+    <sql id="pagePrefix">
+        select * from (
+    </sql>
+
+    <!-- 分页查询后缀 -->
+    <sql id="pageSuffix">
+        ) vv
+        <if test="startRow != null and pageSize != null">
+            limit ${startRow}, ${pageSize}
+        </if>
+    </sql>
+
+
+    <!-- 新增角色信息表 -->
+    <insert id="insertSysRole" parameterType="cn.framework.system.dao.auto.entity.SysRoleEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into sys_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="create_time != null">
+                create_time,
+            </if>
+            <if test="create_user != null">
+                create_user,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="modify_time != null">
+                modify_time,
+            </if>
+            <if test="modify_user != null">
+                modify_user,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="valid != null">
+                valid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="create_time != null">
+                #{create_time},
+            </if>
+            <if test="create_user != null">
+                #{create_user},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="memo != null">
+                #{memo},
+            </if>
+            <if test="modify_time != null">
+                #{modify_time},
+            </if>
+            <if test="modify_user != null">
+                #{modify_user},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="valid != null">
+                #{valid},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 删除角色信息表 -->
+    <delete id="deleteSysRole" parameterType="integer">
+        delete from sys_role where id = #{id}
+    </delete>
+
+    <!-- 更新角色信息表 -->
+    <update id="updateSysRole" parameterType="cn.framework.system.dao.auto.entity.SysRoleEntity">
+        update sys_role
+        <set>
+
+
+            <if test="description != null and description != ''">description = #{description},</if><!-- 角色描述 -->
+
+            <if test="memo != null and memo != ''">memo = #{memo},</if><!-- 备注 -->
+
+            <if test="modify_user != null and modify_user != ''">modify_user = #{modify_user},</if><!-- 修改人 -->
+            <if test="name != null and name != ''">name = #{name},</if><!-- 角色名称 -->
+            <if test="valid != null and valid != ''">valid = #{valid},</if><!-- 是否有效 -->
+            modify_time = sysdate() <!-- 修改时间 -->
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 根据id查询角色信息表 -->
+    <select id="selectSysRoleById" parameterType="integer"
+            resultType="cn.framework.system.dao.auto.entity.SysRoleEntity">
+        select
+        <include refid="sys_role_col"/>
+        from sys_role where id = #{id}
+    </select>
+
+    <!-- 根据条件查询角色信息表列表 -->
+    <select id="getSysRoles" parameterType="cn.framework.system.dao.auto.entity.SysRoleEntity"
+            resultType="cn.framework.system.dao.auto.entity.SysRoleEntity">
+        <include refid="pagePrefix"/>
+        select
+        <include refid="sys_role_col"/>
+        from sys_role
+        <where>
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="description != null and description != ''">and description = #{description}</if><!-- 角色描述 -->
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="name != null and name != ''">and name = #{name}</if><!-- 角色名称 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+        </where>
+        <include refid="pageSuffix"/>
+    </select>
+
+    <!-- 根据条件查询角色信息表数量 -->
+    <select id="getSysRolesCount" parameterType="cn.framework.system.dao.auto.entity.SysRoleEntity"
+            resultType="Integer">
+        select count(1) from sys_role
+        <where>
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="description != null and description != ''">and description = #{description}</if><!-- 角色描述 -->
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="name != null and name != ''">and name = #{name}</if><!-- 角色名称 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+        </where>
+    </select>
+</mapper>

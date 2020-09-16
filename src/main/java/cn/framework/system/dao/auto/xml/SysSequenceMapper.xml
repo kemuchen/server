@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.framework.system.dao.auto.mapper.SysSequenceMapper">
+    <!-- 字段列表 -->
+    <sql id="sys_sequence_col">
+        circle, create_time, create_user, current_value, id, increment, max_value, memo, modify_time, modify_user, name, sequence, valid 
+    </sql>
+
+    <!-- 分页查询前缀 -->
+    <sql id="pagePrefix">
+        select * from (
+    </sql>
+
+    <!-- 分页查询后缀 -->
+    <sql id="pageSuffix">
+        ) vv
+        <if test="startRow != null and pageSize != null">
+            limit ${startRow}, ${pageSize}
+        </if>
+    </sql>
+
+
+    <!-- 新增序列信息表 -->
+    <insert id="insertSysSequence" parameterType="cn.framework.system.dao.auto.entity.SysSequenceEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into sys_sequence
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="circle != null">
+                circle,
+            </if>
+            <if test="create_time != null">
+                create_time,
+            </if>
+            <if test="create_user != null">
+                create_user,
+            </if>
+            <if test="current_value != null">
+                current_value,
+            </if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="increment != null">
+                increment,
+            </if>
+            <if test="max_value != null">
+                max_value,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="modify_time != null">
+                modify_time,
+            </if>
+            <if test="modify_user != null">
+                modify_user,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="sequence != null">
+                sequence,
+            </if>
+            <if test="valid != null">
+                valid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="circle != null">
+                #{circle},
+            </if>
+            <if test="create_time != null">
+                #{create_time},
+            </if>
+            <if test="create_user != null">
+                #{create_user},
+            </if>
+            <if test="current_value != null">
+                #{current_value},
+            </if>
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="increment != null">
+                #{increment},
+            </if>
+            <if test="max_value != null">
+                #{max_value},
+            </if>
+            <if test="memo != null">
+                #{memo},
+            </if>
+            <if test="modify_time != null">
+                #{modify_time},
+            </if>
+            <if test="modify_user != null">
+                #{modify_user},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="sequence != null">
+                #{sequence},
+            </if>
+            <if test="valid != null">
+                #{valid},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 删除序列信息表 -->
+    <delete id="deleteSysSequence" parameterType="integer">
+        delete from sys_sequence where id = #{id}
+    </delete>
+
+    <!-- 更新序列信息表 -->
+    <update id="updateSysSequence" parameterType="cn.framework.system.dao.auto.entity.SysSequenceEntity">
+        update sys_sequence
+        <set>
+            <if test="circle != null and circle != ''">circle = #{circle},</if><!-- 是否循环序列 -->
+
+
+            <if test="current_value != null and current_value != ''">current_value = #{current_value},
+            </if><!-- 序列当前值 -->
+
+            <if test="increment != null and increment != ''">increment = #{increment},</if><!-- 序列增长量 -->
+            <if test="max_value != null and max_value != ''">max_value = #{max_value},</if><!-- 序列最大值 -->
+            <if test="memo != null and memo != ''">memo = #{memo},</if><!-- 备注 -->
+
+            <if test="modify_user != null and modify_user != ''">modify_user = #{modify_user},</if><!-- 修改人 -->
+            <if test="name != null and name != ''">name = #{name},</if><!-- 序列名称 -->
+            <if test="sequence != null and sequence != ''">sequence = #{sequence},</if><!-- 序列 -->
+            <if test="valid != null and valid != ''">valid = #{valid},</if><!-- 是否有效 -->
+            modify_time = sysdate() <!-- 修改时间 -->
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 根据id查询序列信息表 -->
+    <select id="selectSysSequenceById" parameterType="integer"
+            resultType="cn.framework.system.dao.auto.entity.SysSequenceEntity">
+        select
+        <include refid="sys_sequence_col"/>
+        from sys_sequence where id = #{id}
+    </select>
+
+    <!-- 根据条件查询序列信息表列表 -->
+    <select id="getSysSequences" parameterType="cn.framework.system.dao.auto.entity.SysSequenceEntity"
+            resultType="cn.framework.system.dao.auto.entity.SysSequenceEntity">
+        <include refid="pagePrefix"/>
+        select
+        <include refid="sys_sequence_col"/>
+        from sys_sequence
+        <where>
+            <if test="circle != null and circle != ''">and circle = #{circle}</if><!-- 是否循环序列 -->
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="current_value != null and current_value != ''">and current_value = #{current_value}
+            </if><!-- 序列当前值 -->
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="increment != null and increment != ''">and increment = #{increment}</if><!-- 序列增长量 -->
+            <if test="max_value != null and max_value != ''">and max_value = #{max_value}</if><!-- 序列最大值 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="name != null and name != ''">and name = #{name}</if><!-- 序列名称 -->
+            <if test="sequence != null and sequence != ''">and sequence = #{sequence}</if><!-- 序列 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+        </where>
+        <include refid="pageSuffix"/>
+    </select>
+
+    <!-- 根据条件查询序列信息表数量 -->
+    <select id="getSysSequencesCount" parameterType="cn.framework.system.dao.auto.entity.SysSequenceEntity"
+            resultType="Integer">
+        select count(1) from sys_sequence
+        <where>
+            <if test="circle != null and circle != ''">and circle = #{circle}</if><!-- 是否循环序列 -->
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="current_value != null and current_value != ''">and current_value = #{current_value}
+            </if><!-- 序列当前值 -->
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="increment != null and increment != ''">and increment = #{increment}</if><!-- 序列增长量 -->
+            <if test="max_value != null and max_value != ''">and max_value = #{max_value}</if><!-- 序列最大值 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="name != null and name != ''">and name = #{name}</if><!-- 序列名称 -->
+            <if test="sequence != null and sequence != ''">and sequence = #{sequence}</if><!-- 序列 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+        </where>
+    </select>
+</mapper>

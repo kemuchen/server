@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.framework.system.dao.auto.mapper.SysRightMapper">
+    <!-- 字段列表 -->
+    <sql id="sys_right_col">
+        authed, create_time, create_user, icon, id, memo, modify_time, modify_user, parent_id, right_name, right_type, right_url, sort_no, sub_sys_type, valid 
+    </sql>
+
+    <!-- 分页查询前缀 -->
+    <sql id="pagePrefix">
+        select * from (
+    </sql>
+
+    <!-- 分页查询后缀 -->
+    <sql id="pageSuffix">
+        ) vv
+        <if test="startRow != null and pageSize != null">
+            limit ${startRow}, ${pageSize}
+        </if>
+    </sql>
+
+
+    <!-- 新增权限信息表 -->
+    <insert id="insertSysRight" parameterType="cn.framework.system.dao.auto.entity.SysRightEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into sys_right
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="authed != null">
+                authed,
+            </if>
+            <if test="create_time != null">
+                create_time,
+            </if>
+            <if test="create_user != null">
+                create_user,
+            </if>
+            <if test="icon != null">
+                icon,
+            </if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="modify_time != null">
+                modify_time,
+            </if>
+            <if test="modify_user != null">
+                modify_user,
+            </if>
+            <if test="parent_id != null">
+                parent_id,
+            </if>
+            <if test="right_name != null">
+                right_name,
+            </if>
+            <if test="right_type != null">
+                right_type,
+            </if>
+            <if test="right_url != null">
+                right_url,
+            </if>
+            <if test="sort_no != null">
+                sort_no,
+            </if>
+            <if test="sub_sys_type != null">
+                sub_sys_type,
+            </if>
+            <if test="valid != null">
+                valid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="authed != null">
+                #{authed},
+            </if>
+            <if test="create_time != null">
+                #{create_time},
+            </if>
+            <if test="create_user != null">
+                #{create_user},
+            </if>
+            <if test="icon != null">
+                #{icon},
+            </if>
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="memo != null">
+                #{memo},
+            </if>
+            <if test="modify_time != null">
+                #{modify_time},
+            </if>
+            <if test="modify_user != null">
+                #{modify_user},
+            </if>
+            <if test="parent_id != null">
+                #{parent_id},
+            </if>
+            <if test="right_name != null">
+                #{right_name},
+            </if>
+            <if test="right_type != null">
+                #{right_type},
+            </if>
+            <if test="right_url != null">
+                #{right_url},
+            </if>
+            <if test="sort_no != null">
+                #{sort_no},
+            </if>
+            <if test="sub_sys_type != null">
+                #{sub_sys_type},
+            </if>
+            <if test="valid != null">
+                #{valid},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 删除权限信息表 -->
+    <delete id="deleteSysRight" parameterType="integer">
+        delete from sys_right where id = #{id}
+    </delete>
+
+    <!-- 更新权限信息表 -->
+    <update id="updateSysRight" parameterType="cn.framework.system.dao.auto.entity.SysRightEntity">
+        update sys_right
+        <set>
+            <if test="authed != null and authed != ''">authed = #{authed},</if><!-- 是否校验权限 -->
+
+
+            <if test="icon != null and icon != ''">icon = #{icon},</if><!-- 权限图标 -->
+
+            <if test="memo != null and memo != ''">memo = #{memo},</if><!-- 备注 -->
+
+            <if test="modify_user != null and modify_user != ''">modify_user = #{modify_user},</if><!-- 修改人 -->
+            <if test="parent_id != null and parent_id != ''">parent_id = #{parent_id},</if><!-- 父菜单id -->
+            <if test="right_name != null and right_name != ''">right_name = #{right_name},</if><!-- 权限名称 -->
+            <if test="right_type != null and right_type != ''">right_type = #{right_type},</if><!-- 权限类别 -->
+            <if test="right_url != null and right_url != ''">right_url = #{right_url},</if><!-- 权限链接 -->
+            <if test="sort_no != null and sort_no != ''">sort_no = #{sort_no},</if><!-- 权限排序 -->
+            <if test="sub_sys_type != null and sub_sys_type != ''">sub_sys_type = #{sub_sys_type},</if><!-- 子系统类别 -->
+            <if test="valid != null and valid != ''">valid = #{valid},</if><!-- 是否有效 -->
+            modify_time = sysdate() <!-- 修改时间 -->
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 根据id查询权限信息表 -->
+    <select id="selectSysRightById" parameterType="integer"
+            resultType="cn.framework.system.dao.auto.entity.SysRightEntity">
+        select
+        <include refid="sys_right_col"/>
+        from sys_right where id = #{id}
+    </select>
+
+    <!-- 根据条件查询权限信息表列表 -->
+    <select id="getSysRights" parameterType="cn.framework.system.dao.auto.entity.SysRightEntity"
+            resultType="cn.framework.system.dao.auto.entity.SysRightEntity">
+        <include refid="pagePrefix"/>
+        select
+        <include refid="sys_right_col"/>
+        from sys_right
+        <where>
+            <if test="authed != null and authed != ''">and authed = #{authed}</if><!-- 是否校验权限 -->
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="icon != null and icon != ''">and icon = #{icon}</if><!-- 权限图标 -->
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="parent_id != null and parent_id != ''">and parent_id = #{parent_id}</if><!-- 父菜单id -->
+            <if test="right_name != null and right_name != ''">and right_name = #{right_name}</if><!-- 权限名称 -->
+            <if test="right_type != null and right_type != ''">and right_type = #{right_type}</if><!-- 权限类别 -->
+            <if test="right_url != null and right_url != ''">and right_url = #{right_url}</if><!-- 权限链接 -->
+            <if test="sort_no != null and sort_no != ''">and sort_no = #{sort_no}</if><!-- 权限排序 -->
+            <if test="sub_sys_type != null and sub_sys_type != ''">and sub_sys_type = #{sub_sys_type}</if><!-- 子系统类别 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+        </where>
+        <include refid="pageSuffix"/>
+    </select>
+
+    <!-- 根据条件查询权限信息表数量 -->
+    <select id="getSysRightsCount" parameterType="cn.framework.system.dao.auto.entity.SysRightEntity"
+            resultType="Integer">
+        select count(1) from sys_right
+        <where>
+            <if test="authed != null and authed != ''">and authed = #{authed}</if><!-- 是否校验权限 -->
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="icon != null and icon != ''">and icon = #{icon}</if><!-- 权限图标 -->
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="parent_id != null and parent_id != ''">and parent_id = #{parent_id}</if><!-- 父菜单id -->
+            <if test="right_name != null and right_name != ''">and right_name = #{right_name}</if><!-- 权限名称 -->
+            <if test="right_type != null and right_type != ''">and right_type = #{right_type}</if><!-- 权限类别 -->
+            <if test="right_url != null and right_url != ''">and right_url = #{right_url}</if><!-- 权限链接 -->
+            <if test="sort_no != null and sort_no != ''">and sort_no = #{sort_no}</if><!-- 权限排序 -->
+            <if test="sub_sys_type != null and sub_sys_type != ''">and sub_sys_type = #{sub_sys_type}</if><!-- 子系统类别 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+        </where>
+    </select>
+</mapper>

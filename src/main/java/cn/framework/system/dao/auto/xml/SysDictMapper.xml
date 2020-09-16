@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.framework.system.dao.auto.mapper.SysDictMapper">
+    <!-- 字段列表 -->
+    <sql id="sys_dict_col">
+        create_time, create_user, description, dictcode, dicttype, id, memo, modify_time, modify_user, typename, valid 
+    </sql>
+
+    <!-- 分页查询前缀 -->
+    <sql id="pagePrefix">
+        select * from (
+    </sql>
+
+    <!-- 分页查询后缀 -->
+    <sql id="pageSuffix">
+        ) vv
+        <if test="startRow != null and pageSize != null">
+            limit ${startRow}, ${pageSize}
+        </if>
+    </sql>
+
+
+    <!-- 新增字典信息表 -->
+    <insert id="insertSysDict" parameterType="cn.framework.system.dao.auto.entity.SysDictEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into sys_dict
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="create_time != null">
+                create_time,
+            </if>
+            <if test="create_user != null">
+                create_user,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="dictcode != null">
+                dictcode,
+            </if>
+            <if test="dicttype != null">
+                dicttype,
+            </if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="modify_time != null">
+                modify_time,
+            </if>
+            <if test="modify_user != null">
+                modify_user,
+            </if>
+            <if test="typename != null">
+                typename,
+            </if>
+            <if test="valid != null">
+                valid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="create_time != null">
+                #{create_time},
+            </if>
+            <if test="create_user != null">
+                #{create_user},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="dictcode != null">
+                #{dictcode},
+            </if>
+            <if test="dicttype != null">
+                #{dicttype},
+            </if>
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="memo != null">
+                #{memo},
+            </if>
+            <if test="modify_time != null">
+                #{modify_time},
+            </if>
+            <if test="modify_user != null">
+                #{modify_user},
+            </if>
+            <if test="typename != null">
+                #{typename},
+            </if>
+            <if test="valid != null">
+                #{valid},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 删除字典信息表 -->
+    <delete id="deleteSysDict" parameterType="integer">
+        delete from sys_dict where id = #{id}
+    </delete>
+
+    <!-- 更新字典信息表 -->
+    <update id="updateSysDict" parameterType="cn.framework.system.dao.auto.entity.SysDictEntity">
+        update sys_dict
+        <set>
+
+
+            <if test="description != null and description != ''">description = #{description},</if><!-- 字典项代码描述 -->
+            <if test="dictcode != null and dictcode != ''">dictcode = #{dictcode},</if><!-- 字典项代码 -->
+            <if test="dicttype != null and dicttype != ''">dicttype = #{dicttype},</if><!-- 字典项类别 -->
+
+            <if test="memo != null and memo != ''">memo = #{memo},</if><!-- 备注 -->
+
+            <if test="modify_user != null and modify_user != ''">modify_user = #{modify_user},</if><!-- 修改人 -->
+            <if test="typename != null and typename != ''">typename = #{typename},</if><!-- 字典项类型名称 -->
+            <if test="valid != null and valid != ''">valid = #{valid},</if><!-- 是否有效 -->
+            modify_time = sysdate() <!-- 修改时间 -->
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 根据id查询字典信息表 -->
+    <select id="selectSysDictById" parameterType="integer"
+            resultType="cn.framework.system.dao.auto.entity.SysDictEntity">
+        select
+        <include refid="sys_dict_col"/>
+        from sys_dict where id = #{id}
+    </select>
+
+    <!-- 根据条件查询字典信息表列表 -->
+    <select id="getSysDicts" parameterType="cn.framework.system.dao.auto.entity.SysDictEntity"
+            resultType="cn.framework.system.dao.auto.entity.SysDictEntity">
+        <include refid="pagePrefix"/>
+        select
+        <include refid="sys_dict_col"/>
+        from sys_dict
+        <where>
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="description != null and description != ''">and description = #{description}</if><!-- 字典项代码描述 -->
+            <if test="dictcode != null and dictcode != ''">and dictcode = #{dictcode}</if><!-- 字典项代码 -->
+            <if test="dicttype != null and dicttype != ''">and dicttype = #{dicttype}</if><!-- 字典项类别 -->
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="typename != null and typename != ''">and typename = #{typename}</if><!-- 字典项类型名称 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+        </where>
+        <include refid="pageSuffix"/>
+    </select>
+
+    <!-- 根据条件查询字典信息表数量 -->
+    <select id="getSysDictsCount" parameterType="cn.framework.system.dao.auto.entity.SysDictEntity"
+            resultType="Integer">
+        select count(1) from sys_dict
+        <where>
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="description != null and description != ''">and description = #{description}</if><!-- 字典项代码描述 -->
+            <if test="dictcode != null and dictcode != ''">and dictcode = #{dictcode}</if><!-- 字典项代码 -->
+            <if test="dicttype != null and dicttype != ''">and dicttype = #{dicttype}</if><!-- 字典项类别 -->
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="typename != null and typename != ''">and typename = #{typename}</if><!-- 字典项类型名称 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+        </where>
+    </select>
+</mapper>

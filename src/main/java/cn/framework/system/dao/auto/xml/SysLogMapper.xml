@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.framework.system.dao.auto.mapper.SysLogMapper">
+    <!-- 字段列表 -->
+    <sql id="sys_log_col">
+        create_time, create_user, error_code, error_desc, id, ip, memo, method, modify_time, modify_user, operation, operation_result, operation_return, operation_time, params, username, valid
+    </sql>
+
+    <!-- 分页查询前缀 -->
+    <sql id="pagePrefix">
+        select * from (
+    </sql>
+
+    <!-- 分页查询后缀 -->
+    <sql id="pageSuffix">
+        ) vv
+        <if test="startRow != null and pageSize != null">
+            limit ${startRow}, ${pageSize}
+        </if>
+    </sql>
+
+
+    <!-- 新增系统日志表 -->
+    <insert id="insertSysLog" parameterType="cn.framework.system.dao.auto.entity.SysLogEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into sys_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="create_time != null">
+                create_time,
+            </if>
+            <if test="create_user != null">
+                create_user,
+            </if>
+            <if test="error_code != null">
+                error_code,
+            </if>
+            <if test="error_desc != null">
+                error_desc,
+            </if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="method != null">
+                method,
+            </if>
+            <if test="modify_time != null">
+                modify_time,
+            </if>
+            <if test="modify_user != null">
+                modify_user,
+            </if>
+            <if test="operation != null">
+                operation,
+            </if>
+            <if test="operation_result != null">
+                operation_result,
+            </if>
+            <if test="operation_return != null">
+                operation_return,
+            </if>
+            <if test="operation_time != null">
+                operation_time,
+            </if>
+            <if test="params != null">
+                params,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="valid != null">
+                valid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="create_time != null">
+                #{create_time},
+            </if>
+            <if test="create_user != null">
+                #{create_user},
+            </if>
+            <if test="error_code != null">
+                #{error_code},
+            </if>
+            <if test="error_desc != null">
+                #{error_desc},
+            </if>
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="ip != null">
+                #{ip},
+            </if>
+            <if test="memo != null">
+                #{memo},
+            </if>
+            <if test="method != null">
+                #{method},
+            </if>
+            <if test="modify_time != null">
+                #{modify_time},
+            </if>
+            <if test="modify_user != null">
+                #{modify_user},
+            </if>
+            <if test="operation != null">
+                #{operation},
+            </if>
+            <if test="operation_result != null">
+                #{operation_result},
+            </if>
+            <if test="operation_return != null">
+                #{operation_return},
+            </if>
+            <if test="operation_time != null">
+                #{operation_time},
+            </if>
+            <if test="params != null">
+                #{params},
+            </if>
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="valid != null">
+                #{valid},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 删除系统日志表 -->
+    <delete id="deleteSysLog" parameterType="integer">
+        delete from sys_log where id = #{id}
+    </delete>
+
+    <!-- 更新系统日志表 -->
+    <update id="updateSysLog" parameterType="cn.framework.system.dao.auto.entity.SysLogEntity">
+        update sys_log
+        <set>
+
+
+            <if test="error_code != null and error_code != ''">error_code = #{error_code},</if><!-- 错误代码 -->
+            <if test="error_desc != null and error_desc != ''">error_desc = #{error_desc},</if><!-- 错误描述 -->
+
+            <if test="ip != null and ip != ''">ip = #{ip},</if><!-- ip地址 -->
+            <if test="memo != null and memo != ''">memo = #{memo},</if><!-- 备注 -->
+            <if test="method != null and method != ''">method = #{method},</if><!-- 调用方法 -->
+
+            <if test="modify_user != null and modify_user != ''">modify_user = #{modify_user},</if><!-- 修改人 -->
+            <if test="operation != null and operation != ''">operation = #{operation},</if><!-- 用户操作 -->
+            <if test="operation_result != null and operation_result != ''">operation_result = #{operation_result},
+            </if><!-- 执行结果 -->
+            <if test="operation_return != null and operation_return != ''">operation_return = #{operation_return},
+            </if><!-- 返回信息 -->
+            <if test="operation_time != null and operation_time != ''">operation_time = #{operation_time},
+            </if><!-- 执行时长 -->
+            <if test="params != null and params != ''">params = #{params},</if><!-- 请求参数 -->
+            <if test="username != null and username != ''">username = #{username},</if><!-- 用户名 -->
+            <if test="valid != null and valid != ''">valid = #{valid},</if><!-- 是否有效 -->
+            modify_time = sysdate() <!-- 修改时间 -->
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 根据id查询系统日志表 -->
+    <select id="selectSysLogById" parameterType="integer"
+            resultType="cn.framework.system.dao.auto.entity.SysLogEntity">
+        select
+        <include refid="sys_log_col"/>
+        from sys_log where id = #{id}
+    </select>
+
+    <!-- 根据条件查询系统日志表列表 -->
+    <select id="getSysLogs" parameterType="cn.framework.system.dao.auto.entity.SysLogEntity"
+            resultType="cn.framework.system.dao.auto.entity.SysLogEntity">
+        <include refid="pagePrefix"/>
+        select
+        <include refid="sys_log_col"/>
+        from sys_log
+        <where>
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="error_code != null and error_code != ''">and error_code = #{error_code}</if><!-- 错误代码 -->
+            <if test="error_desc != null and error_desc != ''">and error_desc = #{error_desc}</if><!-- 错误描述 -->
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="ip != null and ip != ''">and ip = #{ip}</if><!-- ip地址 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+            <if test="method != null and method != ''">and method = #{method}</if><!-- 调用方法 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="operation != null and operation != ''">and operation = #{operation}</if><!-- 用户操作 -->
+            <if test="operation_result != null and operation_result != ''">and operation_result = #{operation_result}
+            </if><!-- 执行结果 -->
+            <if test="operation_return != null and operation_return != ''">and operation_return = #{operation_return}
+            </if><!-- 返回信息 -->
+            <if test="operation_time != null and operation_time != ''">and operation_time = #{operation_time}
+            </if><!-- 执行时长 -->
+            <if test="params != null and params != ''">and params = #{params}</if><!-- 请求参数 -->
+            <if test="username != null and username != ''">and username = #{username}</if><!-- 用户名 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+        </where>
+        <include refid="pageSuffix"/>
+    </select>
+
+    <!-- 根据条件查询系统日志表数量 -->
+    <select id="getSysLogsCount" parameterType="cn.framework.system.dao.auto.entity.SysLogEntity"
+            resultType="Integer">
+        select count(1) from sys_log
+        <where>
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="error_code != null and error_code != ''">and error_code = #{error_code}</if><!-- 错误代码 -->
+            <if test="error_desc != null and error_desc != ''">and error_desc = #{error_desc}</if><!-- 错误描述 -->
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="ip != null and ip != ''">and ip = #{ip}</if><!-- ip地址 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+            <if test="method != null and method != ''">and method = #{method}</if><!-- 调用方法 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="operation != null and operation != ''">and operation = #{operation}</if><!-- 用户操作 -->
+            <if test="operation_result != null and operation_result != ''">and operation_result = #{operation_result}
+            </if><!-- 执行结果 -->
+            <if test="operation_return != null and operation_return != ''">and operation_return = #{operation_return}
+            </if><!-- 返回信息 -->
+            <if test="operation_time != null and operation_time != ''">and operation_time = #{operation_time}
+            </if><!-- 执行时长 -->
+            <if test="params != null and params != ''">and params = #{params}</if><!-- 请求参数 -->
+            <if test="username != null and username != ''">and username = #{username}</if><!-- 用户名 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+        </where>
+    </select>
+</mapper>

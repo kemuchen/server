@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.framework.system.dao.auto.mapper.SysConfigMapper">
+    <!-- 字段列表 -->
+    <sql id="sys_config_col">
+        config_desc, config_name, config_value, create_time, create_user, id, memo, modify_time, modify_user, valid 
+    </sql>
+
+    <!-- 分页查询前缀 -->
+    <sql id="pagePrefix">
+        select * from (
+    </sql>
+
+    <!-- 分页查询后缀 -->
+    <sql id="pageSuffix">
+        ) vv
+        <if test="startRow != null and pageSize != null">
+            limit ${startRow}, ${pageSize}
+        </if>
+    </sql>
+
+
+    <!-- 新增系统参数配置表 -->
+    <insert id="insertSysConfig" parameterType="cn.framework.system.dao.auto.entity.SysConfigEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into sys_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="config_desc != null">
+                config_desc,
+            </if>
+            <if test="config_name != null">
+                config_name,
+            </if>
+            <if test="config_value != null">
+                config_value,
+            </if>
+            <if test="create_time != null">
+                create_time,
+            </if>
+            <if test="create_user != null">
+                create_user,
+            </if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="modify_time != null">
+                modify_time,
+            </if>
+            <if test="modify_user != null">
+                modify_user,
+            </if>
+            <if test="valid != null">
+                valid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="config_desc != null">
+                #{config_desc},
+            </if>
+            <if test="config_name != null">
+                #{config_name},
+            </if>
+            <if test="config_value != null">
+                #{config_value},
+            </if>
+            <if test="create_time != null">
+                #{create_time},
+            </if>
+            <if test="create_user != null">
+                #{create_user},
+            </if>
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="memo != null">
+                #{memo},
+            </if>
+            <if test="modify_time != null">
+                #{modify_time},
+            </if>
+            <if test="modify_user != null">
+                #{modify_user},
+            </if>
+            <if test="valid != null">
+                #{valid},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 删除系统参数配置表 -->
+    <delete id="deleteSysConfig" parameterType="integer">
+        delete from sys_config where id = #{id}
+    </delete>
+
+    <!-- 更新系统参数配置表 -->
+    <update id="updateSysConfig" parameterType="cn.framework.system.dao.auto.entity.SysConfigEntity">
+        update sys_config
+        <set>
+            <if test="config_desc != null and config_desc != ''">config_desc = #{config_desc},</if><!-- 参数说明 -->
+            <if test="config_name != null and config_name != ''">config_name = #{config_name},</if><!-- 参数名称 -->
+            <if test="config_value != null and config_value != ''">config_value = #{config_value},</if><!-- 参数值 -->
+
+
+            <if test="memo != null and memo != ''">memo = #{memo},</if><!-- 备注 -->
+
+            <if test="modify_user != null and modify_user != ''">modify_user = #{modify_user},</if><!-- 修改人 -->
+            <if test="valid != null and valid != ''">valid = #{valid},</if><!-- 是否有效 -->
+            modify_time = sysdate() <!-- 修改时间 -->
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 根据id查询系统参数配置表 -->
+    <select id="selectSysConfigById" parameterType="integer"
+            resultType="cn.framework.system.dao.auto.entity.SysConfigEntity">
+        select
+        <include refid="sys_config_col"/>
+        from sys_config where id = #{id}
+    </select>
+
+    <!-- 根据条件查询系统参数配置表列表 -->
+    <select id="getSysConfigs" parameterType="cn.framework.system.dao.auto.entity.SysConfigEntity"
+            resultType="cn.framework.system.dao.auto.entity.SysConfigEntity">
+        <include refid="pagePrefix"/>
+        select
+        <include refid="sys_config_col"/>
+        from sys_config
+        <where>
+            <if test="config_desc != null and config_desc != ''">and config_desc = #{config_desc}</if><!-- 参数说明 -->
+            <if test="config_name != null and config_name != ''">and config_name = #{config_name}</if><!-- 参数名称 -->
+            <if test="config_value != null and config_value != ''">and config_value = #{config_value}</if><!-- 参数值 -->
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+        </where>
+        <include refid="pageSuffix"/>
+    </select>
+
+    <!-- 根据条件查询系统参数配置表数量 -->
+    <select id="getSysConfigsCount" parameterType="cn.framework.system.dao.auto.entity.SysConfigEntity"
+            resultType="Integer">
+        select count(1) from sys_config
+        <where>
+            <if test="config_desc != null and config_desc != ''">and config_desc = #{config_desc}</if><!-- 参数说明 -->
+            <if test="config_name != null and config_name != ''">and config_name = #{config_name}</if><!-- 参数名称 -->
+            <if test="config_value != null and config_value != ''">and config_value = #{config_value}</if><!-- 参数值 -->
+            <if test="create_time_sta != null">and create_time <![CDATA[>=]]> #{create_time_sta}</if><!-- 创建时间 -->
+            <if test="create_time_end != null">and create_time <![CDATA[<=]]> #{create_time_end}</if><!-- 创建时间 -->
+            <if test="create_user != null and create_user != ''">and create_user = #{create_user}</if><!-- 创建人 -->
+            <if test="id != null and id != ''">and id = #{id}</if><!-- 主键 -->
+            <if test="memo != null and memo != ''">and memo = #{memo}</if><!-- 备注 -->
+            <if test="modify_time_sta != null">and modify_time <![CDATA[>=]]> #{modify_time_sta}</if><!-- 修改时间 -->
+            <if test="modify_time_end != null">and modify_time <![CDATA[<=]]> #{modify_time_end}</if><!-- 修改时间 -->
+            <if test="modify_user != null and modify_user != ''">and modify_user = #{modify_user}</if><!-- 修改人 -->
+            <if test="valid != null and valid != ''">and valid = #{valid}</if><!-- 是否有效 -->
+        </where>
+    </select>
+</mapper>
